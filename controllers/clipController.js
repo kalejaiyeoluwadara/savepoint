@@ -6,14 +6,23 @@ const { asyncHandler } = require("../utils/asyncHandler");
 // @route   POST /api/clips
 // @access  Private
 exports.createClip = asyncHandler(async (req, res) => {
-  // Add user to req.body
-  req.body.user = req.user.id;
+  const { title, content, url, tags } = req.body;
 
-  const clip = await Clip.create(req.body);
+  // Add the authenticated user's ID to the clip data
+  const clipData = {
+    title,
+    content,
+    url,
+    tags,
+    user: req.user.id,
+  };
+
+  const newClip = await Clip.create(clipData);
 
   res.status(201).json({
     success: true,
-    data: clip,
+    data: newClip,
+    message: "Clip created successfully",
   });
 });
 
