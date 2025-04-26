@@ -1,4 +1,4 @@
-// models/User.js
+require("dotenv").config();
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -47,7 +47,7 @@ UserSchema.methods.getSignedJwtToken = function () {
     { id: this._id },
     process.env.JWT_SECRET || "savepoint_jwt_secret",
     {
-      expiresIn: process.env.JWT_EXPIRE || "30d",
+      expiresIn: process.env.JWT_EXPIRE,
     }
   );
 };

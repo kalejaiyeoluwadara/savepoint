@@ -1,4 +1,4 @@
-// middleware/auth.js
+require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const { asyncHandler } = require("../utils/asyncHandler");
 const User = require("../models/User");
@@ -26,10 +26,7 @@ exports.protect = asyncHandler(async (req, res, next) => {
 
   try {
     // Verify token
-    const decoded = jwt.verify(
-      token,
-      process.env.JWT_SECRET || "savepoint_jwt_secret"
-    );
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     // Get the user from the token
     req.user = await User.findById(decoded.id);
