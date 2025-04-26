@@ -6,8 +6,13 @@ const { asyncHandler } = require("../utils/asyncHandler");
 // @route   POST /api/auth/register
 // @access  Public
 exports.register = asyncHandler(async (req, res) => {
-  const { name, email, password } = req.body;
-
+  const { name, email, password } = req.body || {};
+  if (!name || !email || !password) {
+    return res.status(400).json({
+      success: false,
+      message: "Please provide a name, email and password",
+    });
+  }
   // Check if user already exists
   const userExists = await User.findOne({ email });
   if (userExists) {
